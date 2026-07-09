@@ -1,0 +1,16 @@
+# macOS
+.DS_Store
+
+# Claude Code local config
+.claude/
+
+# Unused source assets (not referenced by the site)
+carter.HEIC
+davinci__david___squeegee___img1_can_you_make_a_video_of_m.png
+logo.jpg
+scroll hero yes.mp4
+spot free.jpeg
+squeegee_smooth.mp4.sb-*
+unger-window-squeegees-983920-64_1000.jpg.avif
+0011_steveos-squeegee-combo.jpg.webp
+0012_steveos-squeegee-combo.jpg.webp
