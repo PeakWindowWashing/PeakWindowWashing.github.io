@@ -236,9 +236,9 @@ a { color: inherit; }
   position: absolute; inset: 0;
   background: rgba(9,22,37,.38);
 }
-.step-1 { background-image: url('scrub.png'); }
-.step-2 { background-image: url('carter_up.jpg'); background-position: center 56%; }
-.step-3 { background-image: url('detail.png'); background-position: center 42%; }
+.step-1 { background-image: url('Scrub1.png'); background-position: center 60%; }
+.step-2 { background-image: url('Squeegee1.png'); background-position: center 56%; }
+.step-3 { background-image: url('detail1.png'); background-position: center 42%; }
 .step-4 { background-image: url('spotfree_web.jpg'); background-position: center 46%; }
 .step-label {
   position: relative;
