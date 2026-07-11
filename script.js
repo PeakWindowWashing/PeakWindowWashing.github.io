@@ -180,8 +180,10 @@ document.querySelectorAll(".ba-slider").forEach(window.baSliderInit);
   track.insertBefore(lastClone, real[0]);
 
   const all = Array.from(track.children); // [cloneLast, real..., cloneFirst]
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   let v = 1;                              // virtual position, starts on first real slide
-  let snapTimer = null;
+  let animating = false;
+  let settleTimer = null;
 
   const realIdx = (vi) => (vi - 1 + n) % n;
 
@@ -199,27 +201,46 @@ document.querySelectorAll(".ba-slider").forEach(window.baSliderInit);
     dots.forEach((d, i) => d.classList.toggle("is-active", i === realIdx(v)));
   }
 
-  // When we land on a clone, silently jump to its real twin.
+  // Once a slide transition ends on a cloned edge, silently snap to its real
+  // twin. Idempotent + timer-safe so it can be called at any moment (on the
+  // real transitionend, as a fallback, or before starting the next move)
+  // without ever leaving the position out of sync.
   function settle() {
+    if (settleTimer) { clearTimeout(settleTimer); settleTimer = null; }
+    animating = false;
     if (v === 0) v = n;
     else if (v === n + 1) v = 1;
     else return;
-    paint();
     center(v, false);
+    paint();
   }
 
-  function show(vi) {
-    if (snapTimer) { clearTimeout(snapTimer); snapTimer = null; settle(); }
+  // Animate to an absolute virtual index. Callers must resolve any pending
+  // edge-snap (via settle) BEFORE reading v, so the target is always computed
+  // from a real, in-sync position — this is what keeps rapid clicks and the
+  // wrap-around seamless.
+  function go(vi) {
     v = Math.max(0, Math.min(all.length - 1, vi));
     paint();
+    if (reduce) { center(v, false); settle(); return; }
+    animating = true;
     center(v, true);
-    snapTimer = setTimeout(() => { snapTimer = null; settle(); }, 600);
+    settleTimer = setTimeout(settle, 650); // fallback if transitionend is missed
   }
 
-  if (prev) prev.addEventListener("click", () => show(v - 1));
-  if (next) next.addEventListener("click", () => show(v + 1));
-  dots.forEach((d, i) => d.addEventListener("click", () => show(i + 1)));
-  all.forEach((s, i) => s.addEventListener("click", () => { if (i !== v) show(i); }));
+  // Relative step (prev/next): settle first, THEN read v and move.
+  function step(dir) { settle(); go(v + dir); }
+
+  // The real trigger for the edge-snap: fires exactly when the slide finishes
+  // sliding, so there's no fixed-timer race against the animation.
+  track.addEventListener("transitionend", (e) => {
+    if (e.target === track && e.propertyName === "transform") settle();
+  });
+
+  if (prev) prev.addEventListener("click", () => step(-1));
+  if (next) next.addEventListener("click", () => step(1));
+  dots.forEach((d, i) => d.addEventListener("click", () => { settle(); go(i + 1); }));
+  all.forEach((s, i) => s.addEventListener("click", () => { settle(); if (i !== v) go(i); }));
 
   window.addEventListener("resize", () => center(v, false));
   window.addEventListener("load", () => center(v, false));
