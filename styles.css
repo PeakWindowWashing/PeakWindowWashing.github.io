@@ -262,12 +262,18 @@ a { color: inherit; }
 .results .display { color: #fff; }
 .results-sub { color: rgba(255,255,255,.72); margin-top: .6rem; font-size: 1.02rem; }
 
+.ba-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2.5rem;
+}
 .ba-slider {
   position: relative;
   width: 100%;
-  max-width: 440px;
+  max-width: var(--ba-maxw, 440px);
   margin: 0 auto;
-  aspect-ratio: 812 / 1046;
+  aspect-ratio: var(--ba-ar, 812 / 1046);
   border-radius: var(--radius);
   overflow: hidden;
   box-shadow: var(--shadow-lg);

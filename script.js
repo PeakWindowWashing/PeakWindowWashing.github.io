@@ -111,38 +111,39 @@ document.getElementById("year").textContent = new Date().getFullYear();
   targets.forEach((el) => io.observe(el));
 })();
 
-// ---- Before / After slider ----
+// ---- Before / After sliders ----
 (function () {
-  const slider = document.getElementById("baSlider");
-  if (!slider) return;
-  const handle = slider.querySelector(".ba-handle");
-  let dragging = false;
+  document.querySelectorAll(".ba-slider").forEach((slider) => {
+    const handle = slider.querySelector(".ba-handle");
+    if (!handle) return;
+    let dragging = false;
 
-  function setPos(clientX) {
-    const rect = slider.getBoundingClientRect();
-    let pct = ((clientX - rect.left) / rect.width) * 100;
-    pct = Math.max(0, Math.min(100, pct));
-    slider.style.setProperty("--pos", pct + "%");
-    handle.setAttribute("aria-valuenow", Math.round(pct));
-  }
+    function setPos(clientX) {
+      const rect = slider.getBoundingClientRect();
+      let pct = ((clientX - rect.left) / rect.width) * 100;
+      pct = Math.max(0, Math.min(100, pct));
+      slider.style.setProperty("--pos", pct + "%");
+      handle.setAttribute("aria-valuenow", Math.round(pct));
+    }
 
-  slider.addEventListener("pointerdown", (e) => {
-    dragging = true;
-    slider.classList.add("is-dragging");
-    slider.setPointerCapture(e.pointerId);
-    setPos(e.clientX);
-  });
-  slider.addEventListener("pointermove", (e) => {
-    if (dragging) setPos(e.clientX);
-  });
-  const stop = () => { dragging = false; slider.classList.remove("is-dragging"); };
-  slider.addEventListener("pointerup", stop);
-  slider.addEventListener("pointercancel", stop);
+    slider.addEventListener("pointerdown", (e) => {
+      dragging = true;
+      slider.classList.add("is-dragging");
+      slider.setPointerCapture(e.pointerId);
+      setPos(e.clientX);
+    });
+    slider.addEventListener("pointermove", (e) => {
+      if (dragging) setPos(e.clientX);
+    });
+    const stop = () => { dragging = false; slider.classList.remove("is-dragging"); };
+    slider.addEventListener("pointerup", stop);
+    slider.addEventListener("pointercancel", stop);
 
-  handle.addEventListener("keydown", (e) => {
-    const cur = parseFloat(getComputedStyle(slider).getPropertyValue("--pos")) || 50;
-    if (e.key === "ArrowLeft") { slider.style.setProperty("--pos", Math.max(0, cur - 4) + "%"); handle.setAttribute("aria-valuenow", Math.round(Math.max(0, cur - 4))); e.preventDefault(); }
-    if (e.key === "ArrowRight") { slider.style.setProperty("--pos", Math.min(100, cur + 4) + "%"); handle.setAttribute("aria-valuenow", Math.round(Math.min(100, cur + 4))); e.preventDefault(); }
+    handle.addEventListener("keydown", (e) => {
+      const cur = parseFloat(getComputedStyle(slider).getPropertyValue("--pos")) || 50;
+      if (e.key === "ArrowLeft") { const v = Math.max(0, cur - 4); slider.style.setProperty("--pos", v + "%"); handle.setAttribute("aria-valuenow", Math.round(v)); e.preventDefault(); }
+      if (e.key === "ArrowRight") { const v = Math.min(100, cur + 4); slider.style.setProperty("--pos", v + "%"); handle.setAttribute("aria-valuenow", Math.round(v)); e.preventDefault(); }
+    });
   });
 })();
 
