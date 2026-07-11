@@ -256,6 +256,70 @@ a { color: inherit; }
 .process-cta { text-align: center; margin-top: 3rem; }
 
 /* ============================================================
+   Before / After slider
+   ============================================================ */
+.results { background: var(--navy); }
+.results .display { color: #fff; }
+.results-sub { color: rgba(255,255,255,.72); margin-top: .6rem; font-size: 1.02rem; }
+
+.ba-slider {
+  position: relative;
+  width: 100%;
+  max-width: 440px;
+  margin: 0 auto;
+  aspect-ratio: 812 / 1046;
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+  user-select: none;
+  touch-action: pan-y;              /* let vertical scroll through, we handle horizontal */
+  cursor: ew-resize;
+  background: var(--navy);
+}
+.ba-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+  -webkit-user-drag: none;
+}
+/* BEFORE sits on top and is wiped away from the right as --pos grows */
+.ba-before { clip-path: inset(0 calc(100% - var(--pos)) 0 0); }
+
+.ba-divider {
+  position: absolute;
+  top: 0; bottom: 0;
+  left: var(--pos);
+  width: 3px;
+  margin-left: -1.5px;
+  background: #fff;
+  box-shadow: 0 0 0 1px rgba(14,42,68,.15);
+  pointer-events: none;
+}
+.ba-handle {
+  position: absolute;
+  top: 50%;
+  left: var(--pos);
+  transform: translate(-50%, -50%);
+  width: 46px; height: 46px;
+  border-radius: 50%;
+  border: none;
+  background: #fff;
+  color: var(--navy);
+  display: grid;
+  place-items: center;
+  box-shadow: 0 6px 18px rgba(14,42,68,.35);
+  cursor: ew-resize;
+  padding: 0;
+}
+.ba-handle:focus-visible { outline: 3px solid var(--sky); outline-offset: 3px; }
+.ba-slider.is-dragging { cursor: ew-resize; }
+.ba-slider.is-dragging .ba-divider,
+.ba-slider.is-dragging .ba-handle { transition: none; }
+
+/* ============================================================
    Services
    ============================================================ */
 .services { background: var(--tint); }
