@@ -263,9 +263,30 @@ a { color: inherit; }
 .results-sub { color: rgba(255,255,255,.72); margin-top: .6rem; font-size: 1.02rem; }
 
 .ba-carousel { display: flex; flex-direction: column; align-items: center; }
-.ba-viewport { position: relative; width: 100%; display: flex; justify-content: center; }
-.ba-slide { display: none; width: 100%; justify-content: center; }
-.ba-slide.is-active { display: flex; }
+.ba-viewport {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  transition: height .45s cubic-bezier(.4, 0, .2, 1);
+}
+.ba-slide {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  display: flex;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(.985);
+  transition: opacity .4s ease, transform .4s ease;
+}
+.ba-slide.is-active {
+  opacity: 1;
+  pointer-events: auto;
+  transform: scale(1);
+}
+@media (prefers-reduced-motion: reduce) {
+  .ba-viewport, .ba-slide { transition: none; }
+}
 
 .ba-controls {
   display: flex;
