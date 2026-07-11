@@ -112,8 +112,7 @@ document.getElementById("year").textContent = new Date().getFullYear();
 })();
 
 // ---- Before / After sliders ----
-(function () {
-  document.querySelectorAll(".ba-slider").forEach((slider) => {
+window.baSliderInit = function (slider) {
     const handle = slider.querySelector(".ba-handle");
     if (!handle) return;
     let dragging = false;
@@ -144,39 +143,81 @@ document.getElementById("year").textContent = new Date().getFullYear();
       if (e.key === "ArrowLeft") { const v = Math.max(0, cur - 4); slider.style.setProperty("--pos", v + "%"); handle.setAttribute("aria-valuenow", Math.round(v)); e.preventDefault(); }
       if (e.key === "ArrowRight") { const v = Math.min(100, cur + 4); slider.style.setProperty("--pos", v + "%"); handle.setAttribute("aria-valuenow", Math.round(v)); e.preventDefault(); }
     });
-  });
-})();
+};
+document.querySelectorAll(".ba-slider").forEach(window.baSliderInit);
 
-// ---- Before / After carousel ----
+// ---- Before / After carousel (infinite filmstrip) ----
 (function () {
   const carousel = document.querySelector(".ba-carousel");
   if (!carousel) return;
   const viewport = carousel.querySelector(".ba-viewport");
-  const slides = Array.from(carousel.querySelectorAll(".ba-slide"));
+  const track = carousel.querySelector(".ba-track");
+  const real = Array.from(track.querySelectorAll(".ba-slide"));
   const dots = Array.from(carousel.querySelectorAll(".ba-dot"));
   const prev = carousel.querySelector(".ba-prev");
   const next = carousel.querySelector(".ba-next");
-  let idx = 0;
+  const n = real.length;
+  if (!n) return;
 
-  function setHeight() {
-    const active = slides[idx];
-    if (active) viewport.style.height = active.offsetHeight + "px";
+  // Clone the last slide onto the front and the first onto the back,
+  // so there is always a photo peeking on BOTH sides and the loop
+  // wraps around seamlessly.
+  const firstClone = real[0].cloneNode(true);
+  const lastClone = real[n - 1].cloneNode(true);
+  [firstClone, lastClone].forEach((c) => {
+    c.classList.remove("is-active");
+    c.setAttribute("aria-hidden", "true");
+    c.querySelectorAll(".ba-slider").forEach(window.baSliderInit);
+  });
+  track.appendChild(firstClone);
+  track.insertBefore(lastClone, real[0]);
+
+  const all = Array.from(track.children); // [cloneLast, real..., cloneFirst]
+  let v = 1;                              // virtual position, starts on first real slide
+  let snapTimer = null;
+
+  const realIdx = (vi) => (vi - 1 + n) % n;
+
+  function center(vi, animate) {
+    const s = all[vi];
+    if (!s) return;
+    if (!animate) track.style.transition = "none";
+    const offset = s.offsetLeft + s.offsetWidth / 2 - viewport.clientWidth / 2;
+    track.style.transform = "translateX(" + -offset + "px)";
+    if (!animate) { void track.offsetWidth; track.style.transition = ""; }
   }
 
-  function show(i) {
-    idx = (i + slides.length) % slides.length;
-    slides.forEach((s, n) => s.classList.toggle("is-active", n === idx));
-    dots.forEach((d, n) => d.classList.toggle("is-active", n === idx));
-    setHeight();
+  function paint() {
+    all.forEach((s, i) => s.classList.toggle("is-active", i === v));
+    dots.forEach((d, i) => d.classList.toggle("is-active", i === realIdx(v)));
   }
 
-  if (prev) prev.addEventListener("click", () => show(idx - 1));
-  if (next) next.addEventListener("click", () => show(idx + 1));
-  dots.forEach((d, n) => d.addEventListener("click", () => show(n)));
+  // When we land on a clone, silently jump to its real twin.
+  function settle() {
+    if (v === 0) v = n;
+    else if (v === n + 1) v = 1;
+    else return;
+    paint();
+    center(v, false);
+  }
 
-  window.addEventListener("resize", setHeight);
-  window.addEventListener("load", setHeight);
-  setHeight();
+  function show(vi) {
+    if (snapTimer) { clearTimeout(snapTimer); snapTimer = null; settle(); }
+    v = Math.max(0, Math.min(all.length - 1, vi));
+    paint();
+    center(v, true);
+    snapTimer = setTimeout(() => { snapTimer = null; settle(); }, 600);
+  }
+
+  if (prev) prev.addEventListener("click", () => show(v - 1));
+  if (next) next.addEventListener("click", () => show(v + 1));
+  dots.forEach((d, i) => d.addEventListener("click", () => show(i + 1)));
+  all.forEach((s, i) => s.addEventListener("click", () => { if (i !== v) show(i); }));
+
+  window.addEventListener("resize", () => center(v, false));
+  window.addEventListener("load", () => center(v, false));
+  paint();
+  center(v, false);
 })();
 
 // ---- Quote form ----
