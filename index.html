@@ -12,7 +12,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;0,700;1,600;1,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=29" />
+  <link rel="stylesheet" href="styles.css?v=30" />
 </head>
 <body>
 
@@ -97,43 +97,64 @@
         <header class="section-head center" data-reveal>
           <p class="section-eyebrow">See the difference</p>
           <h2 class="display">BEFORE &amp; AFTER</h2>
-          <p class="results-sub">Drag the slider to reveal the spot-free finish.</p>
+          <p class="results-sub">Drag each slider to reveal the finish — tap the arrows to see more.</p>
         </header>
-        <div class="ba-stack" data-reveal>
-          <div class="ba-slider" style="--pos:50%; --ba-ar:812/1046; --ba-maxw:440px">
-            <img class="ba-img ba-after" src="after1.png?v=1" alt="Window after professional cleaning" draggable="false" />
-            <img class="ba-img ba-before" src="before1.png?v=1" alt="Same window before cleaning" draggable="false" />
-            <div class="ba-divider" aria-hidden="true"></div>
-            <button class="ba-handle" type="button" role="slider" tabindex="0"
-                    aria-label="Drag to compare before and after"
-                    aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">
-              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M9 6 4 12l5 6M15 6l5 6-5 6" />
-              </svg>
-            </button>
+        <div class="ba-carousel" data-reveal>
+          <div class="ba-viewport">
+            <div class="ba-slide is-active">
+              <div class="ba-slider" style="--pos:50%; --ba-ar:812/1046; --ba-maxw:440px">
+                <img class="ba-img ba-after" src="after1.png?v=1" alt="Window after professional cleaning" draggable="false" />
+                <img class="ba-img ba-before" src="before1.png?v=1" alt="Same window before cleaning" draggable="false" />
+                <div class="ba-divider" aria-hidden="true"></div>
+                <button class="ba-handle" type="button" role="slider" tabindex="0"
+                        aria-label="Drag to compare before and after"
+                        aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">
+                  <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M9 6 4 12l5 6M15 6l5 6-5 6" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+            <div class="ba-slide">
+              <div class="ba-slider" style="--pos:50%; --ba-ar:372/491; --ba-maxw:440px">
+                <img class="ba-img ba-after" src="After3.png?v=1" alt="Window after professional cleaning" draggable="false" />
+                <img class="ba-img ba-before" src="Before3.png?v=1" alt="Same window before cleaning" draggable="false" />
+                <div class="ba-divider" aria-hidden="true"></div>
+                <button class="ba-handle" type="button" role="slider" tabindex="0"
+                        aria-label="Drag to compare before and after"
+                        aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">
+                  <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M9 6 4 12l5 6M15 6l5 6-5 6" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+            <div class="ba-slide">
+              <div class="ba-slider" style="--pos:50%; --ba-ar:391/321; --ba-maxw:560px">
+                <img class="ba-img ba-after" src="After4.png?v=1" alt="Window after professional cleaning" draggable="false" />
+                <img class="ba-img ba-before" src="Before4.png?v=1" alt="Same window before cleaning" draggable="false" />
+                <div class="ba-divider" aria-hidden="true"></div>
+                <button class="ba-handle" type="button" role="slider" tabindex="0"
+                        aria-label="Drag to compare before and after"
+                        aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">
+                  <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M9 6 4 12l5 6M15 6l5 6-5 6" />
+                  </svg>
+                </button>
+              </div>
+            </div>
           </div>
-          <div class="ba-slider" style="--pos:50%; --ba-ar:372/491; --ba-maxw:440px">
-            <img class="ba-img ba-after" src="After3.png?v=1" alt="Window after professional cleaning" draggable="false" />
-            <img class="ba-img ba-before" src="Before3.png?v=1" alt="Same window before cleaning" draggable="false" />
-            <div class="ba-divider" aria-hidden="true"></div>
-            <button class="ba-handle" type="button" role="slider" tabindex="0"
-                    aria-label="Drag to compare before and after"
-                    aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">
-              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M9 6 4 12l5 6M15 6l5 6-5 6" />
-              </svg>
+          <div class="ba-controls">
+            <button class="ba-nav ba-prev" type="button" aria-label="Previous comparison">
+              <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg>
             </button>
-          </div>
-          <div class="ba-slider" style="--pos:50%; --ba-ar:391/321; --ba-maxw:560px">
-            <img class="ba-img ba-after" src="After4.png?v=1" alt="Window after professional cleaning" draggable="false" />
-            <img class="ba-img ba-before" src="Before4.png?v=1" alt="Same window before cleaning" draggable="false" />
-            <div class="ba-divider" aria-hidden="true"></div>
-            <button class="ba-handle" type="button" role="slider" tabindex="0"
-                    aria-label="Drag to compare before and after"
-                    aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">
-              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M9 6 4 12l5 6M15 6l5 6-5 6" />
-              </svg>
+            <div class="ba-dots">
+              <button class="ba-dot is-active" type="button" aria-label="Comparison 1"></button>
+              <button class="ba-dot" type="button" aria-label="Comparison 2"></button>
+              <button class="ba-dot" type="button" aria-label="Comparison 3"></button>
+            </div>
+            <button class="ba-nav ba-next" type="button" aria-label="Next comparison">
+              <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
             </button>
           </div>
         </div>
@@ -375,6 +396,6 @@
     </div>
   </footer>
 
-  <script src="script.js?v=6"></script>
+  <script src="script.js?v=7"></script>
 </body>
 </html>

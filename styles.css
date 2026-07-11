@@ -262,12 +262,45 @@ a { color: inherit; }
 .results .display { color: #fff; }
 .results-sub { color: rgba(255,255,255,.72); margin-top: .6rem; font-size: 1.02rem; }
 
-.ba-stack {
+.ba-carousel { display: flex; flex-direction: column; align-items: center; }
+.ba-viewport { position: relative; width: 100%; display: flex; justify-content: center; }
+.ba-slide { display: none; width: 100%; justify-content: center; }
+.ba-slide.is-active { display: flex; }
+
+.ba-controls {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 2.5rem;
+  justify-content: center;
+  gap: 1.25rem;
+  margin-top: 1.75rem;
 }
+.ba-nav {
+  flex: 0 0 auto;
+  width: 46px; height: 46px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255,255,255,.14);
+  color: #fff;
+  display: grid; place-items: center;
+  cursor: pointer;
+  transition: background .15s ease, transform .15s ease;
+}
+.ba-nav:hover { background: rgba(255,255,255,.28); }
+.ba-nav:active { transform: scale(.94); }
+.ba-nav:focus-visible { outline: 3px solid var(--sky); outline-offset: 3px; }
+.ba-dots { display: flex; gap: .55rem; align-items: center; }
+.ba-dot {
+  width: 10px; height: 10px;
+  padding: 0;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255,255,255,.32);
+  cursor: pointer;
+  transition: background .15s ease, transform .15s ease;
+}
+.ba-dot:hover { background: rgba(255,255,255,.55); }
+.ba-dot.is-active { background: #fff; transform: scale(1.25); }
+.ba-dot:focus-visible { outline: 2px solid var(--sky); outline-offset: 2px; }
 .ba-slider {
   position: relative;
   width: 100%;

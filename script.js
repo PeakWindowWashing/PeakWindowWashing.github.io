@@ -147,6 +147,27 @@ document.getElementById("year").textContent = new Date().getFullYear();
   });
 })();
 
+// ---- Before / After carousel ----
+(function () {
+  const carousel = document.querySelector(".ba-carousel");
+  if (!carousel) return;
+  const slides = Array.from(carousel.querySelectorAll(".ba-slide"));
+  const dots = Array.from(carousel.querySelectorAll(".ba-dot"));
+  const prev = carousel.querySelector(".ba-prev");
+  const next = carousel.querySelector(".ba-next");
+  let idx = 0;
+
+  function show(i) {
+    idx = (i + slides.length) % slides.length;
+    slides.forEach((s, n) => s.classList.toggle("is-active", n === idx));
+    dots.forEach((d, n) => d.classList.toggle("is-active", n === idx));
+  }
+
+  if (prev) prev.addEventListener("click", () => show(idx - 1));
+  if (next) next.addEventListener("click", () => show(idx + 1));
+  dots.forEach((d, n) => d.addEventListener("click", () => show(n)));
+})();
+
 // ---- Quote form ----
 const form = document.getElementById("quoteForm");
 const note = document.getElementById("formNote");
