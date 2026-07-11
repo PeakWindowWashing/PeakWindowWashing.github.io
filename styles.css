@@ -262,30 +262,29 @@ a { color: inherit; }
 .results .display { color: #fff; }
 .results-sub { color: rgba(255,255,255,.72); margin-top: .6rem; font-size: 1.02rem; }
 
-.ba-carousel { display: flex; flex-direction: column; align-items: center; }
+.ba-carousel { display: flex; flex-direction: column; align-items: center; --ba-h: clamp(340px, 56vh, 560px); }
 .ba-viewport {
-  position: relative;
   width: 100%;
   overflow: hidden;
-  transition: height .45s cubic-bezier(.4, 0, .2, 1);
+}
+.ba-track {
+  display: flex;
+  align-items: center;
+  gap: clamp(16px, 3vw, 32px);
+  transition: transform .55s cubic-bezier(.33, 1, .68, 1);
+  will-change: transform;
 }
 .ba-slide {
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  display: flex;
-  justify-content: center;
-  opacity: 0;
-  pointer-events: none;
-  transform: scale(.985);
-  transition: opacity .4s ease, transform .4s ease;
+  flex: 0 0 auto;
+  opacity: .35;
+  transform: scale(.92);
+  transition: opacity .55s ease, transform .55s cubic-bezier(.33, 1, .68, 1);
+  cursor: pointer;
 }
-.ba-slide.is-active {
-  opacity: 1;
-  pointer-events: auto;
-  transform: scale(1);
-}
+.ba-slide.is-active { opacity: 1; transform: scale(1); cursor: default; }
+.ba-slide:not(.is-active) .ba-slider { pointer-events: none; }
 @media (prefers-reduced-motion: reduce) {
-  .ba-viewport, .ba-slide { transition: none; }
+  .ba-track, .ba-slide { transition: none; }
 }
 
 .ba-controls {
@@ -324,9 +323,9 @@ a { color: inherit; }
 .ba-dot:focus-visible { outline: 2px solid var(--sky); outline-offset: 2px; }
 .ba-slider {
   position: relative;
-  width: 100%;
-  max-width: var(--ba-maxw, 440px);
-  margin: 0 auto;
+  height: var(--ba-h, 560px);
+  width: auto;
+  max-width: 90vw;
   aspect-ratio: var(--ba-ar, 812 / 1046);
   border-radius: var(--radius);
   overflow: hidden;
