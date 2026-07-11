@@ -115,7 +115,13 @@ document.getElementById("year").textContent = new Date().getFullYear();
 window.baSliderInit = function (slider) {
     const handle = slider.querySelector(".ba-handle");
     if (!handle) return;
+    const tag = slider.querySelector(".ba-tag");
     let dragging = false;
+
+    function updateTag(pct) {
+      if (tag) tag.textContent = pct >= 50 ? "Before" : "After";
+    }
+    updateTag(parseFloat(getComputedStyle(slider).getPropertyValue("--pos")) || 50);
 
     function setPos(clientX) {
       const rect = slider.getBoundingClientRect();
@@ -123,6 +129,7 @@ window.baSliderInit = function (slider) {
       pct = Math.max(0, Math.min(100, pct));
       slider.style.setProperty("--pos", pct + "%");
       handle.setAttribute("aria-valuenow", Math.round(pct));
+      updateTag(pct);
     }
 
     slider.addEventListener("pointerdown", (e) => {
@@ -140,8 +147,8 @@ window.baSliderInit = function (slider) {
 
     handle.addEventListener("keydown", (e) => {
       const cur = parseFloat(getComputedStyle(slider).getPropertyValue("--pos")) || 50;
-      if (e.key === "ArrowLeft") { const v = Math.max(0, cur - 4); slider.style.setProperty("--pos", v + "%"); handle.setAttribute("aria-valuenow", Math.round(v)); e.preventDefault(); }
-      if (e.key === "ArrowRight") { const v = Math.min(100, cur + 4); slider.style.setProperty("--pos", v + "%"); handle.setAttribute("aria-valuenow", Math.round(v)); e.preventDefault(); }
+      if (e.key === "ArrowLeft") { const v = Math.max(0, cur - 4); slider.style.setProperty("--pos", v + "%"); handle.setAttribute("aria-valuenow", Math.round(v)); updateTag(v); e.preventDefault(); }
+      if (e.key === "ArrowRight") { const v = Math.min(100, cur + 4); slider.style.setProperty("--pos", v + "%"); handle.setAttribute("aria-valuenow", Math.round(v)); updateTag(v); e.preventDefault(); }
     });
 };
 document.querySelectorAll(".ba-slider").forEach(window.baSliderInit);
